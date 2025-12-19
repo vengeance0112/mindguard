@@ -1,0 +1,333 @@
+You are building a frontend-only interactive analytics dashboard for an academic machine learning project titled:
+
+“Student Mental Health Risk Prediction Dashboard”
+
+This project is part of an end-term Hackathon evaluation and must strictly align with:
+
+An existing Jupyter Notebook (.ipynb) containing:
+
+Synthetic dataset generation
+
+Feature engineering (51 features)
+
+Mutual Information ranking
+
+Logistic Regression and Random Forest models
+
+Final selected model: Logistic Regression
+
+Performance metrics: Accuracy 0.851, Macro F1 0.732, ROC-AUC 0.925, LogLoss 0.358
+
+A trained Logistic Regression model saved as a .pkl file
+
+The dashboard is not for production deployment.
+It is an academic visualization and interaction layer that demonstrates:
+
+Understanding of the data
+
+Understanding of the model
+
+Interpretability
+
+Ethical framing
+
+Practical usability
+
+⚠️ Important constraint:
+Do NOT invent new ML logic.
+Do NOT retrain models.
+Do NOT introduce deep learning, NLP, or external APIs.
+Everything must be derived from the existing notebook and model outputs.
+
+🎯 OBJECTIVE OF THE DASHBOARD
+
+Create a highly polished, hyper-interactive, realistic-looking dashboard UI that demonstrates how the trained model could be used in a real institutional setting without claiming medical diagnosis.
+
+The dashboard must visually and interactively cover exactly what the question paper demands:
+
+Problem context
+
+Major insights from data
+
+Model behavior and factors influencing prediction
+
+Visual analytics
+
+Prediction interface
+
+Ethical care framing and support information
+
+🧱 TECH STACK CONSTRAINTS
+
+Frontend only
+
+Use HTML + CSS + JavaScript
+
+Use Chart.js or ECharts for charts
+
+Use modern dark UI
+
+Smooth transitions and micro-interactions
+
+No backend logic beyond loading .pkl results or mock prediction responses if needed
+
+Assume prediction output is already available after submission
+
+🧭 DASHBOARD STRUCTURE (MANDATORY)
+1️⃣ Landing / Overview Page
+
+Create a premium hero section with:
+
+Title: Student Mental Health Risk Prediction
+
+Subtitle: “AI-assisted early risk identification using behavioral and psychological indicators”
+
+Highlight cards:
+
+10,000+ Training Samples
+
+51 Input Features
+
+3 Risk Levels
+
+Model Accuracy: 85.1%
+
+CTA buttons:
+
+“Start Risk Assessment”
+
+“View Analytics”
+
+Include a short disclaimer:
+
+“This system is an early-warning analytical tool and not a medical diagnosis system.”
+
+2️⃣ Multi-Step Prediction Flow (Core Feature)
+
+Design a 3-step wizard-style assessment:
+
+Step 1: Lifestyle Metrics
+
+Age
+
+Study Hours
+
+Sleep Hours
+
+Screen Time
+
+Outdoor Activity Hours
+
+Use sliders with live numeric feedback.
+
+Step 2: Personal & Support Information
+
+Gender
+
+Academic Level
+
+Who the student talks to about problems
+
+Openness to mental health discussion
+
+Use radio buttons and dropdowns.
+
+Step 3: Psychological Scales (1–5)
+
+Academic Pressure
+
+Stress Level
+
+Sleep Issues
+
+Hopelessness
+
+Financial Comfort
+
+Institutional Support
+
+Use labeled scale selectors with semantic labels:
+(1 = Very Low, 5 = Very High)
+
+After Submission:
+
+Simulate prediction output using:
+
+Risk Category: Low / Medium / High
+
+Risk Probability %
+
+Color-coded result card
+
+Simple explanation text:
+
+“This prediction is based on learned patterns from similar profiles.”
+
+🚨 POST-PREDICTION CARE SECTION (VERY IMPORTANT)
+
+Immediately after showing prediction, display a Support & Care Panel.
+
+This must include:
+
+If Medium or High Risk:
+
+“You are not alone” message
+
+List of Counseling & Support Resources:
+
+College Counselor
+
+Student Wellness Center
+
+National Helpline (India examples):
+
+Kiran Helpline: 1800-599-0019
+
+Sneha Foundation
+
+Local Emergency Services
+
+Encourage reaching out to:
+
+Family
+
+Friends
+
+Academic mentors
+
+⚠️ Phrase everything responsibly:
+
+“This tool highlights risk patterns, not diagnoses.”
+
+This single section will massively boost evaluation impression.
+
+📊 ANALYTICS DASHBOARD (EXAM CRITICAL)
+
+Create a separate Analytics tab that visualizes model insights, not raw data.
+
+Mandatory Charts:
+1️⃣ Model Summary Cards
+
+Total Features: 51
+
+Positive Coefficients
+
+Negative Coefficients
+
+Risk Levels: 3
+
+2️⃣ Signed Coefficient Bar Chart
+
+Top 15 coefficients
+
+Red bars = risk increasing
+
+Green bars = risk reducing
+
+Clearly labeled feature names
+
+3️⃣ Risk vs Protective Comparison
+
+Side-by-side bars
+
+Show magnitude difference
+
+Explain:
+
+“Positive coefficients increase risk score”
+
+“Negative coefficients act as protective factors”
+
+4️⃣ Top 10 Risk Factors List
+
+Derived directly from Logistic Regression coefficients:
+
+Academic Pressure (High)
+
+Stress Level (High)
+
+Hopelessness (High)
+
+Lack of Support
+
+Poor Sleep
+
+5️⃣ Top 10 Protective Factors List
+
+Low Stress
+
+Strong Support Network
+
+Openness to Help
+
+Adequate Sleep
+
+Financial Stability
+
+Include an “About the Model” Section:
+
+Explain clearly:
+
+Logistic Regression chosen for interpretability
+
+Coefficients used for insight
+
+ROC-AUC indicates ranking ability
+
+Model is probabilistic, not deterministic
+
+🎨 UI / UX REQUIREMENTS
+
+Dark theme
+
+Subtle gradients
+
+Hover effects on cards
+
+Smooth page transitions
+
+Animated charts on load
+
+Professional academic look, not flashy startup hype
+
+🧠 TONE & FRAMING RULES
+
+Never claim medical diagnosis
+
+Always use words like:
+
+“risk”
+
+“early signal”
+
+“pattern-based”
+
+Emphasize care, support, and ethical usage
+
+🚫 WHAT NOT TO DO
+
+No deep learning
+
+No new datasets
+
+No real-time backend inference
+
+No medical claims
+
+No over-engineering beyond notebook scope
+
+✅ FINAL OUTPUT EXPECTATION
+
+Generate:
+
+Clean, readable frontend code
+
+Modular components
+
+Charts wired to model coefficient data
+
+A dashboard that looks far more advanced than typical student projects, yet remains academically honest
+
+This dashboard should make an evaluator think:
+
+“This student understands not just ML, but responsible deployment.”
