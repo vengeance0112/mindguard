@@ -22,6 +22,34 @@ export const api = {
         riskProbability: z.number(),
         contributingFactors: z.array(z.string()),
         protectiveFactors: z.array(z.string()),
+        // Explainable insights
+        insights: z.object({
+          breakdown: z.array(z.object({
+            feature: z.string(),
+            userValue: z.string(),
+            impact: z.number(),
+            type: z.enum(["Risk", "Protective"]),
+            explanation: z.string(),
+          })),
+          cards: z.array(z.object({
+            title: z.string(),
+            cause: z.string(),
+            effect: z.string(),
+            importance: z.string(),
+          })),
+          improvements: z.array(z.object({
+            problem: z.string(),
+            why: z.string(),
+            action: z.string(),
+          })),
+          riskComposition: z.array(z.object({
+            category: z.string(),
+            percentage: z.number(),
+            factors: z.array(z.string()),
+          })),
+          confidence: z.string(),
+          confidenceExplanation: z.string(),
+        }),
       }),
       400: errorSchemas.validation,
     },

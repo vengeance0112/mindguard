@@ -7,7 +7,7 @@ import { insertAssessmentSchema, type InsertAssessment } from "@shared/schema";
 import { Link } from "wouter";
 
 // Icons
-import { ArrowLeft, ArrowRight, Brain, Loader2, AlertTriangle, CheckCircle, Heart } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain, Loader2, AlertTriangle, CheckCircle, Heart, Shield, TrendingUp } from "lucide-react";
 
 // Components
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,9 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { StepIndicator } from "@/components/StepIndicator";
+import { InsightBreakdown } from "@/components/InsightBreakdown";
+import { InsightCards } from "@/components/InsightCards";
+import { ImprovementSuggestions } from "@/components/ImprovementSuggestions";
 
 // Define form fields for each step
 const STEPS = [
@@ -161,8 +164,39 @@ export default function Assessment() {
             </CardContent>
           </Card>
 
+          {/* Explainable Insights Sections */}
+          {result.insights && (
+            <>
+              {result.insights.breakdown && (
+                <InsightBreakdown breakdown={result.insights.breakdown} />
+              )}
+
+              {result.insights.cards && result.insights.cards.length > 0 && (
+                <InsightCards cards={result.insights.cards} />
+              )}
+
+              {result.insights.improvements && result.insights.improvements.length > 0 && (
+                <ImprovementSuggestions improvements={result.insights.improvements} />
+              )}
+
+              {/* Confidence Section */}
+              <Card className="bg-card border-white/10 mt-8">
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-5 h-5 text-blue-400" />
+                    <div>
+                      <h4 className="text-sm font-semibold text-white">Model Confidence</h4>
+                      <p className="text-sm text-muted-foreground">{result.insights.confidence}</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{result.insights.confidenceExplanation}</p>
+                </CardContent>
+              </Card>
+            </>
+          )}
+
           {/* Support Panel - CRITICAL REQUIREMENT */}
-          <Card className="bg-card border-white/10">
+          <Card className="bg-card border-white/10 mt-8">
             <CardContent className="p-6">
               <div className="flex items-center space-x-4 mb-4">
                 <div className="p-3 bg-primary/20 rounded-full">
@@ -194,6 +228,10 @@ export default function Assessment() {
                     <div className="font-semibold text-white text-sm">Online Therapy</div>
                     <div className="text-xs text-muted-foreground mt-1">Connect with licensed therapists through our partner network.</div>
                   </div>
+                </div>
+
+                <div className="p-4 rounded-xl border-2 border-amber-500/30 bg-amber-500/5">
+                  <p className="text-xs text-amber-200">⚠️ <span className="font-semibold">If you are feeling unsafe or overwhelmed right now, please seek immediate help.</span> Crisis support is always available.</p>
                 </div>
               </div>
             </CardContent>

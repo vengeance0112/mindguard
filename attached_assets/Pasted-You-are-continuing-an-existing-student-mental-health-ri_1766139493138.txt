@@ -1,0 +1,234 @@
+You are continuing an existing student mental health risk prediction web app built with a Logistic Regression model trained on 51 features.
+The prediction pipeline already works and produces a risk category: Low, Medium, or High.
+
+Your task is to extend the POST-PREDICTION RESULT PAGE ONLY by adding a deep, explainable, and human-centric insights section, without changing the trained model or feature set.
+
+🎯 PRIMARY OBJECTIVE
+
+After a prediction is shown, the dashboard should clearly explain:
+
+Why this specific risk level was predicted
+
+Which inputs increased risk
+
+Which inputs reduced risk
+
+What exact behaviors or conditions are concerning
+
+What the student can realistically improve
+
+Who they can reach out to immediately
+
+This must feel like Explainable AI + causal reasoning, not a black-box score.
+
+🧠 SECTION 1: Explainable Risk Breakdown (CORE)
+
+Create a new section titled:
+
+“Why You Got This Result”
+
+This section must:
+
+Pull actual model coefficients
+
+Match them with the user’s inputs
+
+Rank the top 5 positive (risk-increasing) and top 5 negative (protective) contributors
+
+UI REQUIREMENTS
+
+Horizontal bar chart
+
+Red bars = factors that increased risk
+
+Green bars = factors that reduced risk
+
+Bar length proportional to contribution magnitude
+
+Tooltip on hover explaining:
+
+Feature name
+
+User’s input value
+
+Model impact direction
+
+Simple explanation in plain English
+
+Example tooltip text:
+
+“High Academic Pressure: Your selected level was high, which strongly increases predicted risk based on patterns learned from similar profiles.”
+
+🔍 SECTION 2: Causal Insight Cards (Human Explanation)
+
+Add a grid of Insight Cards, auto-generated from the top contributing features.
+
+Each card must follow this structure:
+
+Title:
+“Academic Pressure is a Key Risk Factor”
+
+Cause:
+“Your reported academic pressure level is above average and strongly associated with higher distress in the model.”
+
+Effect:
+“This contributes significantly to your overall mental health risk score.”
+
+Why this matters:
+“Sustained academic pressure often correlates with stress, sleep issues, and emotional burnout.”
+
+Generate 3–5 cards dynamically, based on the strongest contributors.
+
+🛠 SECTION 3: Personalized Improvement Suggestions (Actionable)
+
+Create a section titled:
+
+“What You Can Improve Right Now”
+
+Rules:
+
+Suggestions must be directly mapped to negative contributors
+
+No generic mental health advice
+
+Each suggestion must reference a specific input
+
+Example Logic Mapping
+
+High screen time → Suggest screen hygiene
+
+Low sleep hours → Suggest sleep routine
+
+No support network → Encourage reaching out
+
+High stress → Suggest structured breaks or counseling
+
+UI FORMAT
+
+Checklist style cards
+
+Each card includes:
+
+Problem identified
+
+Why it matters
+
+One small realistic step
+
+Example:
+
+“Your sleep duration is below recommended levels. Increasing sleep by even 30–45 minutes daily may significantly reduce stress-related risk.”
+
+📊 SECTION 4: Visual Risk Composition
+
+Add a Risk Composition Visualization:
+
+Options:
+
+Donut chart showing:
+
+Academic factors
+
+Lifestyle factors
+
+Psychological factors
+
+OR stacked bar showing contribution categories
+
+Each segment must be clickable and reveal:
+
+Features inside that category
+
+Their individual impacts
+
+🧭 SECTION 5: Confidence and Uncertainty (Make it Honest)
+
+Replace fake confidence scores.
+
+Add:
+
+“Model Confidence: Moderate / High”
+
+Short explanation:
+
+“This prediction is based on patterns from 10,000 similar student profiles. Individual experiences may vary.”
+
+This increases credibility.
+
+❤️ SECTION 6: Support & Emergency Resources (CRITICAL)
+
+After insights, add a clearly visible support section.
+
+Must include:
+
+National mental health helpline (India):
+
+Kiran Helpline: 1800-599-0019
+
+Campus counseling note (generic if unknown)
+
+Emergency disclaimer:
+
+“If you are feeling unsafe or overwhelmed right now, please seek immediate help.”
+
+UI STYLE
+
+Calm colors
+
+Non-alarming
+
+Not hidden at bottom
+
+🎨 VISUAL & UX REQUIREMENTS
+
+Dark mode consistent with existing theme
+
+Smooth animations when insights load
+
+Skeleton loaders while computing insights
+
+No medical diagnosis language
+
+Tone must be:
+
+Supportive
+
+Neutral
+
+Non-judgmental
+
+🚫 IMPORTANT CONSTRAINTS
+
+Do NOT retrain the model
+
+Do NOT introduce new ML models
+
+Do NOT add AI chatbots
+
+All explanations must be derived from:
+
+Logistic Regression coefficients
+
+User inputs
+
+No fake statistics or hallucinated science
+
+🧪 FINAL CHECK
+
+After implementation, ensure:
+
+Two users with different inputs see different explanations
+
+Insights change if inputs change
+
+Visuals reflect actual coefficients
+
+Language feels human, not robotic
+
+✅ END GOAL
+
+The final result page should feel like:
+
+“This system understands why you might be struggling, shows it transparently, and gently guides you toward help.”
+
+Not just a prediction.
