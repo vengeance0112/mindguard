@@ -1,37 +1,24 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import { type Assessment, type InsertAssessment } from "@shared/schema";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // We can log assessments but don't strictly need to persist them for this MVP
+  createAssessment(assessment: InsertAssessment): Promise<Assessment>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private assessments: Map<number, Assessment>;
+  private currentId: number;
 
   constructor() {
-    this.users = new Map();
+    this.assessments = new Map();
+    this.currentId = 1;
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async createAssessment(insertAssessment: InsertAssessment): Promise<Assessment> {
+    const id = this.currentId++;
+    const assessment: Assessment = { ...insertAssessment, id, riskLevel: null, riskScore: null, timestamp: new Date().toISOString() };
+    this.assessments.set(id, assessment);
+    return assessment;
   }
 }
 
