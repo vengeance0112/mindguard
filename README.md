@@ -227,32 +227,39 @@ flowchart TB
 
 ### Risk Assessment Logic
 
+### Risk Assessment Logic
+
+```mermaid
 flowchart LR
     Start([Input Data]) --> Encode[Feature Encoding]
     Encode --> Scale[StandardScaler]
     Scale --> Predict[Logistic Regression]
-    
+
     Predict --> Prob{Probability Distribution}
-    
-    Prob -->|P Low greater than 0.6| Low[Low Risk]
-    Prob -->|P Med greater than 0.4| Med[Medium Risk]
-    Prob -->|P High greater than 0.5| High[High Risk]
-    
+
+    Prob -->|P(Low) > 0.6| Low[Low Risk]
+    Prob -->|P(Med) > 0.4| Med[Medium Risk]
+    Prob -->|P(High) > 0.5| High[High Risk]
+
     Low --> Explain[Generate Explanations]
     Med --> Explain
     High --> Explain
-    
+
     Explain --> Visual[Visualizations]
     Explain --> Suggest[Improvement Suggestions]
-    
+
     Visual --> Output([Dashboard])
     Suggest --> Output
-    
-    style Start fill:#1e293b,stroke:#3b82f6,color:#fff
-    style Low fill:#10b981,stroke:#fff,color:#fff
-    style Med fill:#f59e0b,stroke:#fff,color:#000
-    style High fill:#ef4444,stroke:#fff,color:#fff
-    style Output fill:#1e293b,stroke:#3b82f6,color:#fff
+
+    %% Styling
+    style Start fill:#1e293b,stroke:#3b82f6,color:#ffffff
+    style Low fill:#10b981,stroke:#ffffff,color:#ffffff
+    style Med fill:#f59e0b,stroke:#ffffff,color:#000000
+    style High fill:#ef4444,stroke:#ffffff,color:#ffffff
+    style Output fill:#1e293b,stroke:#3b82f6,color:#ffffff
+
+```
+
 ---
 
 ## 🛠️ Technology Stack
