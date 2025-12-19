@@ -927,9 +927,9 @@ Contributions are welcome for academic improvement purposes.
 
 For academic inquiries or collaboration:
 
-- **Project Maintainer**: [Your Name]
-- **Institution**: [Your Institution]
-- **Email**: [your.email@institution.edu]
+- **Project Maintainer**: Rajdeep
+- **Institution**: Vijaybhoomi University
+- **Email**: rajgupta6320@gmail.com
 
 ---
 
