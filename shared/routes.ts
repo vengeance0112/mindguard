@@ -47,6 +47,14 @@ export const api = {
             percentage: z.number(),
             factors: z.array(z.string()),
           })),
+          waterfall: z.array(z.object({
+            factor: z.string(),
+            impact: z.number(),
+          })).optional(),
+          modelInfo: z.object({
+            totalSamples: z.number(),
+            rocAuc: z.number(),
+          }).optional(),
           confidence: z.string(),
           confidenceExplanation: z.string(),
         }),

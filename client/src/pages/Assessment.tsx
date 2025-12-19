@@ -20,6 +20,12 @@ import { StepIndicator } from "@/components/StepIndicator";
 import { InsightBreakdown } from "@/components/InsightBreakdown";
 import { InsightCards } from "@/components/InsightCards";
 import { ImprovementSuggestions } from "@/components/ImprovementSuggestions";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { RiskTierGauge } from "@/components/RiskTierGauge";
+import { RiskContributionWaterfall } from "@/components/RiskContributionWaterfall";
+import { LifestyleBalanceRadar } from "@/components/LifestyleBalanceRadar";
+import { BeforeAfterMiniComparison, type ComparisonItem } from "@/components/BeforeAfterMiniComparison";
 
 // Define form fields for each step
 const STEPS = [
@@ -109,90 +115,188 @@ export default function Assessment() {
       RiskIcon = AlertTriangle;
     }
 
+    const confidenceLabel: "High" | "Medium" | "Low" =
+      result?.insights?.confidence === "High" || result?.insights?.confidence === "Medium" || result?.insights?.confidence === "Low"
+        ? result.insights.confidence
+        : "Medium";
+
+    const riskTierValue = typeof result?.riskProbability === "number" ? result.riskProbability : 0;
+
+    const formValues = form.getValues();
+    const idealBaseline = {
+      sleepHours: 8,
+      screenTime: 4,
+      outdoorActivity: 3,
+      stressLevel: 2,
+      academicPressure: 2,
+    };
+
+    const radarInputs = {
+      sleepHours: formValues.sleepHours,
+      screenTime: formValues.screenTime,
+      outdoorActivity: formValues.outdoorActivity,
+      stressLevel: formValues.stressLevel,
+      academicPressure: formValues.academicPressure,
+    };
+
+    const comparisons: ComparisonItem[] = (() => {
+      const items: ComparisonItem[] = [];
+
+      if (formValues.sleepHours < 7) {
+        items.push({ label: "Sleep", current: formValues.sleepHours, target: 8, unit: "hrs", max: 10 });
+      }
+
+      if (formValues.outdoorActivity < 2) {
+        items.push({ label: "Outdoor Activity", current: formValues.outdoorActivity, target: 3, unit: "hrs", max: 7 });
+      }
+
+      if (formValues.screenTime > 7) {
+        items.push({ label: "Screen Time", current: formValues.screenTime, target: 5, unit: "hrs", max: 16 });
+      }
+
+      if (formValues.stressLevel >= 4) {
+        items.push({ label: "Stress Level", current: formValues.stressLevel, target: 2, unit: "/5", max: 5 });
+      }
+
+      return items.slice(0, 2);
+    })();
+
     return (
-      <div className="min-h-screen bg-background py-12 px-4 flex items-center justify-center">
+      <div className="min-h-screen bg-background py-10 px-4">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-2xl space-y-8"
+          className="w-full max-w-6xl mx-auto space-y-6"
         >
-          <div className="text-center space-y-2">
-             <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-white transition-colors mb-4">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <div className="space-y-2">
+              <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-white transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Link>
-            <h1 className="text-3xl font-display font-bold">Assessment Result</h1>
-            <p className="text-muted-foreground">Based on our analysis of your responses</p>
+              <h1 className="text-3xl font-display font-bold">Assessment Result</h1>
+              <p className="text-muted-foreground">
+                Based on patterns learned from 10,000 student profiles — this is a logistic regression model (not a black box).
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Badge
+                variant={isHighRisk ? "destructive" : isMedRisk ? "secondary" : "default"}
+                className={isHighRisk ? "bg-red-500/20 text-red-200 border-red-500/30" : isMedRisk ? "bg-orange-500/20 text-orange-200 border-orange-500/30" : "bg-emerald-500/20 text-emerald-200 border-emerald-500/30"}
+              >
+                Risk: {result.riskLevel}
+              </Badge>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="px-3 py-1 rounded-md border border-white/10 bg-white/5 text-xs text-muted-foreground cursor-help">
+                    Model Confidence: <span className="text-white font-semibold">{confidenceLabel}</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-[320px]">
+                  Trained on 10,000 student profiles.
+                  <br />
+                  ROC-AUC: {result?.insights?.modelInfo?.rocAuc ?? 0.925}
+                  <br />
+                  Prediction reflects statistical patterns, not diagnosis.
+                </TooltipContent>
+              </Tooltip>
+            </div>
           </div>
 
-          <Card className={`overflow-hidden border-2 ${riskBg}`}>
-            <CardContent className="p-8 text-center space-y-6">
-              <div className={`mx-auto w-24 h-24 rounded-full flex items-center justify-center ${riskBg} border-2`}>
-                <RiskIcon className={`w-12 h-12 ${riskColor}`} />
-              </div>
-              
-              <div>
-                <h2 className="text-xl font-medium text-muted-foreground mb-1">Estimated Risk Level</h2>
-                <div className={`text-5xl font-display font-bold ${riskColor}`}>{result.riskLevel}</div>
-                <div className="mt-2 text-sm text-muted-foreground">
-                  Confidence Score: {(result.riskProbability * 100).toFixed(1)}%
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            {/* Left Column */}
+            <div className="lg:col-span-4 space-y-5">
+              <Card className={`overflow-hidden border ${riskBg}`}>
+                <CardContent className="p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-2">
+                      <div className="text-sm text-muted-foreground">Prediction Summary</div>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${riskBg} border` }>
+                          <RiskIcon className={`w-5 h-5 ${riskColor}`} />
+                        </div>
+                        <div>
+                          <div className={`text-2xl font-display font-bold ${riskColor}`}>{result.riskLevel}</div>
+                          <div className="text-xs text-muted-foreground">Relative risk tier</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="w-28">
+                      <RiskTierGauge value={riskTierValue} riskLevel={result.riskLevel} />
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    <div className="p-3 rounded-lg bg-white/5 border border-white/5">
+                      <div className="text-[11px] text-muted-foreground">Top risk drivers</div>
+                      <div className="mt-2 space-y-1">
+                        {result.contributingFactors.slice(0, 3).map((f: string) => (
+                          <div key={f} className="text-xs text-red-200/90">{f}</div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-white/5 border border-white/5">
+                      <div className="text-[11px] text-muted-foreground">Protective signals</div>
+                      <div className="mt-2 space-y-1">
+                        {result.protectiveFactors.slice(0, 3).map((f: string) => (
+                          <div key={f} className="text-xs text-emerald-200/90">{f}</div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <BeforeAfterMiniComparison items={comparisons} />
+            </div>
+
+            {/* Middle Column */}
+            <div className="lg:col-span-5 space-y-5">
+              <div className="grid grid-cols-1 gap-5">
+                <RiskContributionWaterfall waterfall={result?.insights?.waterfall} />
+                <LifestyleBalanceRadar inputs={radarInputs} ideal={idealBaseline} />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left pt-6 border-t border-white/5">
-                <div>
-                  <h4 className="text-sm font-semibold text-white mb-3">Key Contributing Factors</h4>
-                  <ul className="space-y-2">
-                    {result.contributingFactors.map((factor: string, i: number) => (
-                      <li key={i} className="text-sm text-red-400 flex items-start">
-                        <span className="mr-2">•</span> {factor}
-                      </li>
-                    ))}
-                  </ul>
+              {result.insights?.breakdown && result.insights.breakdown.length > 0 && (
+                <div className="hidden lg:block">
+                  <InsightBreakdown breakdown={result.insights.breakdown} />
                 </div>
-                <div>
-                  <h4 className="text-sm font-semibold text-white mb-3">Protective Factors</h4>
-                  <ul className="space-y-2">
-                    {result.protectiveFactors.map((factor: string, i: number) => (
-                      <li key={i} className="text-sm text-green-400 flex items-start">
-                        <span className="mr-2">•</span> {factor}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Explainable Insights Sections */}
-          {result.insights && (
-            <>
-              {result.insights.breakdown && (
-                <InsightBreakdown breakdown={result.insights.breakdown} />
               )}
+            </div>
 
-              {result.insights.cards && result.insights.cards.length > 0 && (
-                <InsightCards cards={result.insights.cards} />
-              )}
-
-              {result.insights.improvements && result.insights.improvements.length > 0 && (
+            {/* Right Column */}
+            <div className="lg:col-span-3 space-y-5">
+              {result.insights?.improvements && result.insights.improvements.length > 0 && (
                 <ImprovementSuggestions improvements={result.insights.improvements} />
               )}
 
-              {/* Confidence Section */}
-              <Card className="bg-card border-white/10 mt-8">
-                <CardContent className="p-6 space-y-4">
+              <Card className="bg-card border-white/10">
+                <CardContent className="p-5 space-y-3">
                   <div className="flex items-center gap-3">
                     <Shield className="w-5 h-5 text-blue-400" />
                     <div>
-                      <h4 className="text-sm font-semibold text-white">Model Confidence</h4>
-                      <p className="text-sm text-muted-foreground">{result.insights.confidence}</p>
+                      <h4 className="text-sm font-semibold text-white">Model Confidence: {confidenceLabel}</h4>
+                      <p className="text-xs text-muted-foreground">Trained on 10,000 student profiles — ROC-AUC: {result?.insights?.modelInfo?.rocAuc ?? 0.925}</p>
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground leading-relaxed">{result.insights.confidenceExplanation}</p>
                 </CardContent>
               </Card>
-            </>
+            </div>
+          </div>
+
+          {/* Mobile: show breakdown below */}
+          {result.insights?.breakdown && result.insights.breakdown.length > 0 && (
+            <div className="lg:hidden">
+              <InsightBreakdown breakdown={result.insights.breakdown} />
+            </div>
+          )}
+
+          {result.insights?.cards && result.insights.cards.length > 0 && (
+            <InsightCards cards={result.insights.cards} />
           )}
 
           {/* Support Panel - CRITICAL REQUIREMENT */}

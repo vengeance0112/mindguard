@@ -88,8 +88,10 @@ app.use((req, res, next) => {
   httpServer.listen(
     {
       port,
-      host: "0.0.0.0",
-      reusePort: true,
+      // On some Windows environments binding explicitly to 0.0.0.0 can throw ENOTSUP.
+      // Let Node pick the default host (typically 127.0.0.1) which works for local dev.
+      // host: "0.0.0.0",
+      // reusePort is not necessary for local single-process dev.
     },
     () => {
       log(`serving on port ${port}`);
